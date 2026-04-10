@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, NavLink } from 'react-router';
 import { loginUser } from "../authSlice";
 import { useEffect, useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Home } from 'lucide-react';
-
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 
 const loginSchema = z.object({
   emailId: z.string().email("Invalid Email"),
@@ -17,12 +16,13 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(loginSchema) }); // Using renamed schema
+  } = useForm({ resolver: zodResolver(loginSchema) });
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -37,30 +37,29 @@ function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-base-300 relative overflow-hidden">
       {/* Abstract Background Elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 blur-[120px] rounded-full pointer-events-none"></div>
-
-      
+      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary/20 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full pointer-events-none"></div>
 
       <div className="card w-full max-w-[420px] bg-base-100/60 backdrop-blur-xl shadow-2xl border border-base-200/50 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out z-10">
         <div className="card-body p-8 sm:p-10">
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <h1 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-2">
-              Welcome Back
+              Welcome back
             </h1>
-            <p className="text-base-content/60 font-medium tracking-wide">Enter your details to sign in to your account</p>
+            <p className="text-base-content/60 font-medium tracking-wide">Enter your details to sign in</p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Email Field */}
             <div className="form-control group">
-              <label className="label pb-2 pt-0">
+              <label className="label pb-1.5 pt-0">
                 <span className="text-sm font-bold text-base-content/80 group-focus-within:text-primary transition-colors">Email Address</span>
               </label>
               <div className="relative flex items-center">
                 <Mail className={`absolute left-4 w-5 h-5 transition-colors ${errors.emailId ? 'text-error/70' : 'text-base-content/40 group-focus-within:text-primary'}`} />
                 <input
                   type="email"
-                  placeholder="name@example.com"
+                  placeholder="john@example.com"
                   className={`input w-full pl-12 bg-base-200/50 border-base-300 hover:border-base-content/20 focus:bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all ${errors.emailId ? 'input-error focus:border-error focus:ring-error/20 bg-error/5' : ''}`}
                   {...register('emailId')}
                 />
@@ -73,8 +72,9 @@ function Login() {
               )}
             </div>
 
+            {/* Password Field */}
             <div className="form-control group">
-              <label className="label pb-2 pt-0">
+              <label className="label pb-1.5 pt-0">
                 <span className="text-sm font-bold text-base-content/80 group-focus-within:text-primary transition-colors">Password</span>
               </label>
               <div className="relative flex items-center">
@@ -102,6 +102,7 @@ function Login() {
               )}
             </div>
 
+            {/* Submit Button */}
             <div className="form-control mt-8">
               <button
                 type="submit"
@@ -123,7 +124,8 @@ function Login() {
             </div>
           </form>
 
-          <div className="text-center mt-8 pt-6 border-t border-base-content/10">
+          {/* Signup Redirect */}
+          <div className="text-center mt-6 pt-5 border-t border-base-content/10">
             <span className="text-sm text-base-content/70 font-medium">
               New to CodeKshetra AI?{' '}
               <NavLink to="/signup" className="link link-primary font-bold hover:link-secondary transition-colors inline-block hover:scale-105 active:scale-95">
