@@ -1,0 +1,45 @@
+# ============================================================================
+# OpenTelemetry Collector Configuration — CodeKshetra AI
+# ============================================================================
+# Receives OTLP traces from the backend and exports to debug (console) output.
+# To export to Tempo instead, uncomment the otlp/tempo exporter below and
+# add a Tempo service to docker-compose.yml.
+# ============================================================================
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "0.0.0.0:4317"
+      http:
+        endpoint: "0.0.0.0:4318"
+
+processors:
+  batch:
+    send_batch_size: 1024
+    timeout: 5s
+
+exporters:
+  # Debug exporter — prints traces to the collector's stdout.
+  # View with: docker compose logs otel-collector
+  debug:
+    verbosity: detailed
+
+  # ── Future: Tempo exporter (uncomment when Tempo is added) ──────────
+  # otlp/tempo:
+  #   endpoint: "tempo:4317"
+  #   tls:
+  #     insecure: true
+
+extensions:
+  health_check:
+    endpoint: "0.0.0.0:13133"
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug]
+      # To switch to Tempo: exporters: [otlp/tempo]

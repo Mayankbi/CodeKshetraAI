@@ -1,5 +1,6 @@
 const cloudinary = require('cloudinary').v2;
 const Problem = require("../models/problem");
+const logger = require('../config/logger');
 const User = require("../models/user");
 const SolutionVideo = require("../models/solutionVideo");
 const { sanitizeFilter } = require('mongoose');
@@ -48,7 +49,7 @@ const generateUploadSignature = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error generating upload signature:', error);
+    logger.error('Error generating upload signature', { error: error.message || error });
     res.status(500).json({ error: 'Failed to generate upload credentials' });
   }
 };
@@ -163,7 +164,7 @@ const saveVideoMetadata = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error saving video metadata:', error);
+    logger.error('Error saving video metadata', { error: error.message || error });
     res.status(500).json({ error: 'Failed to save video metadata' });
   }
 };
@@ -189,7 +190,7 @@ const deleteVideo = async (req, res) => {
     res.json({ message: 'Video deleted successfully' });
 
   } catch (error) {
-    console.error('Error deleting video:', error);
+    logger.error('Error deleting video', { error: error.message || error });
     res.status(500).json({ error: 'Failed to delete video' });
   }
 };

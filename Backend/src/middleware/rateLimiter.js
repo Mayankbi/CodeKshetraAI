@@ -1,4 +1,5 @@
 const redisClient = require('../config/redis');
+const logger = require('../config/logger');
 
 const submitCodeRateLimiter = async (req, res, next) => {
   const userId = req.result._id; 
@@ -22,7 +23,7 @@ const submitCodeRateLimiter = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error('Rate limiter error:', error);
+    logger.error('Rate limiter error', { error: error.message, requestId: req.requestId });
     res.status(500).json({ error: 'Internal server error' });
   }
 };

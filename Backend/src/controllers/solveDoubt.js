@@ -1,4 +1,5 @@
 const { GoogleGenAI } = require("@google/genai");
+const logger = require('../config/logger');
 
 
 const solveDoubt = async (req, res) => {
@@ -92,7 +93,7 @@ Remember: Your goal is to help users learn and understand DSA concepts through t
 
     }
     catch (err) {
-        console.error("Gemini API Error details:", err.message || err);
+        logger.error('Gemini API Error', { error: err.message || err });
 
         let errorMsg = err.message || "Internal server error from AI API";
 

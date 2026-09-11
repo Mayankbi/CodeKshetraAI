@@ -1,5 +1,6 @@
 const { getLanguageById, submitBatch, submitToken } = require("../utils/ProblemUtility");
 const Problem = require("../models/problem");
+const logger = require('../config/logger');
 const User = require("../models/user");
 const Submission = require("../models/submission");
 const SolutionVideo = require("../models/solutionVideo");
@@ -43,7 +44,7 @@ const createProblem = async (req, res) => {
 
       const testResult = await submitToken(resultToken);
 
-      console.log(testResult);
+      logger.debug('Problem creation test results', { testResult });
 
       for (const test of testResult) {
         if (test.status_id != 3) {
